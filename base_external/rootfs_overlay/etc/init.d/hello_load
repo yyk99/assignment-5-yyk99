@@ -1,0 +1,4 @@
+#!/bin/sh
+
+W=`dirname $0`
+$W/module_load hello

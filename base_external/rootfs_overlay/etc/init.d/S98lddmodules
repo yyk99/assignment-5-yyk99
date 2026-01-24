@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# base_external/rootfs_overlay/etc/init.d/S98lddmodules
+
+# Module load order (dependencies first)
+MODULES="scull faulty hello"
+
+W="`dirname $0`"
+echo $W
+
+case "$1" in
+    start)
+	echo "Loading external modules..."
+	for module in $MODULES; do
+	    echo "  Loading $module..."
+	    if sh $W/${module}_load ; then
+		echo "    OK"
+	    else
+		echo "    FAILED"
+		# exit 1
+	    fi
+	done
+	;;
+
+    stop)
+	echo "Unloading external modules..."
+	# Unload in reverse order
+	for module in $(echo $MODULES | awk '{for(i=NF;i>=1;i--) printf "%s ", $i}'); do
+	    echo "  Unloading $module..."
+	    sh $W/${module}_unload 2>/dev/null
+	done
+	;;
+
+    *)
+	echo "Usage: $0 {start|stop}"
+	exit 1
+esac

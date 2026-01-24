@@ -1,0 +1,5 @@
+config BR2_PACKAGE_LDD
+	bool "ldd"
+	help
+	  Includes some kermel modules from the LDD
+	  Used to understand buildroot external trees and package builds.
